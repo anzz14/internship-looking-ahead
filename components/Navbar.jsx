@@ -16,8 +16,8 @@ export default function Navbar() {
     setMounted(true);
     
     const handleScroll = () => {
-      // Change navbar when scrolled past 100px
-      setIsScrolled(window.scrollY > 100);
+      // Change navbar when scrolled past 50px instead of 100px for contact page
+      setIsScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -34,8 +34,8 @@ export default function Navbar() {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled 
-        ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-lg border-b border-white/20 dark:border-gray-800/20' 
-        : 'bg-transparent'
+        ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg border-b border-white/20 dark:border-gray-800/20' 
+        : 'bg-white/10 dark:bg-transparent backdrop-blur-sm'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 sm:h-20">
@@ -45,7 +45,7 @@ export default function Navbar() {
               <h1 className={`font-bold transition-all duration-300 ${
                 isScrolled 
                   ? 'text-lg sm:text-xl text-gray-900 dark:text-white' 
-                  : 'text-xl sm:text-2xl text-white'
+                  : 'text-xl sm:text-2xl text-gray-900 dark:text-white'
               } group-hover:scale-105`}>
                 Looking Ahead
               </h1>
@@ -63,7 +63,7 @@ export default function Navbar() {
                   className={`relative px-3 lg:px-4 py-2 rounded-full transition-all duration-300 group ${
                     isScrolled
                       ? 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20'
-                      : 'text-white/90 hover:bg-white/10'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-white/10'
                   }`}
                 >
                   <div className="flex items-center space-x-2">
@@ -92,7 +92,7 @@ export default function Navbar() {
                   <div className={`absolute inset-0 rounded-full transition-all duration-300 ${
                     isScrolled
                       ? 'bg-gradient-to-r from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/10 group-hover:to-purple-500/10'
-                      : 'bg-gradient-to-r from-white/0 to-white/0 group-hover:from-white/10 group-hover:to-white/20'
+                      : 'bg-gradient-to-r from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/10 group-hover:to-purple-500/10'
                   }`} />
                 </Link>
               );
@@ -107,7 +107,7 @@ export default function Navbar() {
                 className={`ml-2 lg:ml-4 relative rounded-full transition-all duration-300 ${
                   isScrolled
                     ? 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20'
-                    : 'text-white/90 hover:bg-white/10'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-white/10'
                 }`}
               >
                 <Sun className={`h-4 w-4 transition-all duration-300 ${
@@ -129,7 +129,7 @@ export default function Navbar() {
               className={`rounded-full transition-all duration-300 ${
                 isScrolled
                   ? 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20'
-                  : 'text-white/90 hover:bg-white/10'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-white/10'
               }`}
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

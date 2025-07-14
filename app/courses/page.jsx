@@ -40,9 +40,9 @@ import {
   Handshake
 } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { useEffect, useState } from 'react';
 
 export default function CoursesPage() {
   const [activeTab, setActiveTab] = useState('workshops');
@@ -175,13 +175,35 @@ export default function CoursesPage() {
             <div className="max-w-7xl mx-auto">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <div className="flex justify-center mb-8 sm:mb-12">
-                  <TabsList className="grid w-full max-w-xs sm:max-w-md grid-cols-2 sm:grid-cols-4 p-1 bg-white dark:bg-gray-800 rounded-full shadow-lg">
-                    <TabsTrigger value="workshops" className="rounded-full text-xs sm:text-sm">Workshops</TabsTrigger>
-                    <TabsTrigger value="students" className="rounded-full text-xs sm:text-sm">Students</TabsTrigger>
-                    <TabsTrigger value="resources" className="rounded-full text-xs sm:text-sm">Resources</TabsTrigger>
-                    <TabsTrigger value="pricing" className="rounded-full text-xs sm:text-sm">Pricing</TabsTrigger>
-                  </TabsList>
+                  <div className="inline-flex p-1.5 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-200/20 dark:border-gray-700/20">
+                    {[
+                      { value: 'workshops', label: 'Workshops', icon: <GraduationCap className="w-4 h-4" /> },
+                      { value: 'students', label: 'Students', icon: <Users className="w-4 h-4" /> },
+                      { value: 'resources', label: 'Resources', icon: <BookOpen className="w-4 h-4" /> },
+                      { value: 'pricing', label: 'Pricing', icon: <PoundSterling className="w-4 h-4" /> }
+                    ].map((tab) => (
+                      <button
+                        key={tab.value}
+                        onClick={() => setActiveTab(tab.value)}
+                        className={`
+                          relative px-4 sm:px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-300 ease-out
+                          flex items-center justify-center gap-2 min-w-[100px] sm:min-w-[120px] h-12
+                          ${activeTab === tab.value 
+                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 transform scale-105' 
+                            : 'text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white/60 dark:hover:bg-gray-700/60 hover:shadow-md hover:scale-102'
+                          }
+                        `}
+                      >
+                        <span className={`transition-all duration-300 ${activeTab === tab.value ? 'text-white' : 'text-blue-600 dark:text-blue-400'}`}>
+                          {tab.icon}
+                        </span>
+                        <span className="hidden sm:inline">{tab.label}</span>
+                        <span className="sm:hidden text-xs">{tab.label.slice(0, 4)}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
+
 
                 <TabsContent value="workshops" className="space-y-12 sm:space-y-16">
                   {/* Main Workshop */}
@@ -263,7 +285,7 @@ export default function CoursesPage() {
 
                   {/* Additional Services */}
                   <div className="text-center space-y-8" data-aos="fade-up">
-                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white">Complete Support Package</h3>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Complete Support Package</h3>
                     <div className="grid md:grid-cols-4 gap-6">
                       {[
                         { icon: <BookOpen className="w-8 h-8" />, title: "Training Materials", desc: "Comprehensive resources for teachers" },
@@ -285,17 +307,17 @@ export default function CoursesPage() {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="students" className="space-y-16">
-                  <div className="text-center space-y-8" data-aos="fade-up">
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
+                <TabsContent value="students" className="space-y-12 sm:space-y-16">
+                  <div className="text-center space-y-6 sm:space-y-8" data-aos="fade-up">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
                       Student Empowerment Workshops
                     </h2>
-                    <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-4 sm:px-0">
                       Interactive sessions designed to help students build confidence, manage stress, and develop essential life skills.
                     </p>
                   </div>
 
-                  <div className="grid md:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
                     {studentWorkshops.map((workshop, index) => (
                       <Card 
                         key={index} 
@@ -308,8 +330,8 @@ export default function CoursesPage() {
                           <div className={`w-16 h-16 bg-gradient-to-r ${workshop.color} rounded-full flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform`}>
                             {workshop.icon}
                           </div>
-                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{workshop.title}</h3>
-                          <p className="text-gray-600 dark:text-gray-300 mb-6">{workshop.description}</p>
+                          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">{workshop.title}</h3>
+                          <p className="text-gray-600 dark:text-gray-300 mb-6 text-sm sm:text-base">{workshop.description}</p>
                           <div className="flex items-center justify-between">
                             <Badge className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
                               {workshop.duration}
@@ -321,39 +343,39 @@ export default function CoursesPage() {
                     ))}
                   </div>
 
-                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-3xl p-8" data-aos="fade-up">
-                    <div className="text-center space-y-6">
-                      <h3 className="text-3xl font-bold text-gray-900 dark:text-white">Session Details</h3>
-                      <div className="grid md:grid-cols-3 gap-6">
+                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8" data-aos="fade-up">
+                    <div className="text-center space-y-4 sm:space-y-6">
+                      <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Session Details</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
                         <div className="text-center">
-                          <div className="w-16 h-16 mx-auto bg-blue-500 rounded-full flex items-center justify-center text-white mb-4">
-                            <Timer className="w-8 h-8" />
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto bg-blue-500 rounded-full flex items-center justify-center text-white mb-3 sm:mb-4">
+                            <Timer className="w-6 h-6 sm:w-8 sm:h-8" />
                           </div>
-                          <h4 className="font-semibold text-gray-900 dark:text-white">Duration</h4>
-                          <p className="text-gray-600 dark:text-gray-400">60 minutes</p>
+                          <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">Duration</h4>
+                          <p className="text-gray-600 dark:text-gray-400 text-sm">60 minutes</p>
                         </div>
                         <div className="text-center">
-                          <div className="w-16 h-16 mx-auto bg-purple-500 rounded-full flex items-center justify-center text-white mb-4">
-                            <Users className="w-8 h-8" />
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto bg-purple-500 rounded-full flex items-center justify-center text-white mb-3 sm:mb-4">
+                            <Users className="w-6 h-6 sm:w-8 sm:h-8" />
                           </div>
-                          <h4 className="font-semibold text-gray-900 dark:text-white">Group Size</h4>
-                          <p className="text-gray-600 dark:text-gray-400">Up to 30 students</p>
+                          <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">Group Size</h4>
+                          <p className="text-gray-600 dark:text-gray-400 text-sm">Up to 30 students</p>
                         </div>
                         <div className="text-center">
-                          <div className="w-16 h-16 mx-auto bg-green-500 rounded-full flex items-center justify-center text-white mb-4">
-                            <GraduationCap className="w-8 h-8" />
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto bg-green-500 rounded-full flex items-center justify-center text-white mb-3 sm:mb-4">
+                            <GraduationCap className="w-6 h-6 sm:w-8 sm:h-8" />
                           </div>
-                          <h4 className="font-semibold text-gray-900 dark:text-white">Age Range</h4>
-                          <p className="text-gray-600 dark:text-gray-400">Key Stage 3-5</p>
+                          <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">Age Range</h4>
+                          <p className="text-gray-600 dark:text-gray-400 text-sm">Key Stage 3-5</p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </TabsContent>
 
-                <TabsContent value="resources" className="space-y-16">
-                  <div className="text-center space-y-8" data-aos="fade-up">
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
+                <TabsContent value="resources" className="space-y-12 sm:space-y-16">
+                  <div className="text-center space-y-6 sm:space-y-8" data-aos="fade-up">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
                       Resource Library
                     </h2>
                     <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
@@ -566,7 +588,7 @@ export default function CoursesPage() {
                 </TabsContent>
 
                 <TabsContent value="pricing" className="space-y-16">
-                  <div className="text-center space-y-8" data-aos="fade-up">
+                  <div className="text-center space-y-6 sm:space-y-8" data-aos="fade-up">
                     <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
                       Investment in Excellence
                     </h2>
@@ -620,7 +642,7 @@ export default function CoursesPage() {
                     ))}
                   </div>
 
-                  <div className="bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-3xl p-8 max-w-4xl mx-auto" data-aos="fade-up">
+                  <div className="bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-3xl p-6 sm:p-8 max-w-4xl mx-auto" data-aos="fade-up">
                     <div className="text-center space-y-6">
                       <h3 className="text-3xl font-bold text-gray-900 dark:text-white">60-Minute Workshop Includes</h3>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -660,7 +682,7 @@ export default function CoursesPage() {
 
           {/* CTA Section */}
           <section className="py-20 px-6  bg-[#17263a] text-white">
-            <div className="max-w-4xl mx-auto text-center space-y-8" data-aos="fade-up">
+            <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8" data-aos="fade-up">
               <h2 className="text-4xl md:text-5xl font-bold">
                 Ready to Transform Your School?
               </h2>
