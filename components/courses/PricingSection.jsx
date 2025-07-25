@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, PoundSterling, Loader2 } from 'lucide-react';
@@ -10,6 +11,18 @@ const PricingSection = () => {
   const [pricingTiers, setPricingTiers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
+
+  const handleBookPlan = (tier) => {
+    const params = new URLSearchParams({
+      subject: `Enquiring about ${tier.name}`,
+      plan: tier.name,
+      price: tier.price,
+      duration: tier.duration,
+      scrollTo: 'form' // Add scroll parameter
+    });
+    router.push(`/contact?${params.toString()}`);
+  };
 
   // Fallback static data in case API fails
   const fallbackTiers = [
@@ -143,6 +156,7 @@ const PricingSection = () => {
                 <Button 
                   className={`w-full bg-gradient-to-r ${tier.color} hover:opacity-90 text-white py-3 rounded-xl font-semibold`}
                   size="lg"
+                  onClick={() => handleBookPlan(tier)}
                 >
                   Book {tier.name}
                 </Button>

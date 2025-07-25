@@ -155,3 +155,17 @@ body {
   @apply bg-background text-foreground transition-colors;
 }
 
+/* Custom animations */
+@keyframes pulse-once {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-once {
+  animation: pulse-once 1.5s ease-in-out;
+}
+

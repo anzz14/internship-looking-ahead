@@ -3,11 +3,45 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Mail, Send, CheckCircle, AlertCircle, User, MessageSquare } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Mail, Send, CheckCircle, AlertCircle, User, MessageSquare, Star, Clock, PoundSterling } from 'lucide-react';
 
-const ContactForm = ({ formData, isSubmitting, submitStatus, handleInputChange, handleSubmit }) => {
+const ContactForm = ({ formData, isSubmitting, submitStatus, handleInputChange, handleSubmit, planInfo }) => {
   return (
     <div className="lg:col-span-2" data-aos="fade-right">
+      {/* Plan Info Banner */}
+      {planInfo && (
+        <div className="mb-6">
+          <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200 dark:border-blue-700 animate-pulse-once">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <Star className="w-5 h-5 text-blue-600" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Enquiring about: {planInfo.name}
+                </h3>
+              </div>
+              <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
+                {planInfo.price && (
+                  <div className="flex items-center gap-1">
+                    <PoundSterling className="w-4 h-4" />
+                    <span>{planInfo.price}</span>
+                  </div>
+                )}
+                {planInfo.duration && (
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    <span>{planInfo.duration}</span>
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
+                ✨ Form has been prefilled for your convenience
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       <Card className="shadow-2xl border-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
         <CardContent className="p-8 sm:p-12">
           <div className="mb-8">
