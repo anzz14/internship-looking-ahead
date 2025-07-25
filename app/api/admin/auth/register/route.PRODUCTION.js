@@ -1,18 +1,34 @@
+// Production Admin Registration Disabler
+// Run this script to safely disable admin registration in production
+
 import { NextResponse } from 'next/server';
+
+export async function POST(request) {
+  // 🚫 PRODUCTION SECURITY: Admin registration is permanently disabled
+  // To enable admin registration in development, set ALLOW_ADMIN_REGISTRATION=true in .env.local
+  // For production, this endpoint should never be enabled
+  
+  return NextResponse.json(
+    { 
+      success: false, 
+      error: 'Admin registration is disabled in production for security reasons.',
+      message: 'Contact system administrator for admin account creation.'
+    },
+    { status: 403 }
+  );
+}
+
+// Uncomment the code below ONLY for initial setup in development:
+/*
 import { connectMongoDB } from '@/lib/db/mongodb';
 import Admin from '@/lib/models/Admin';
 
 export async function POST(request) {
   try {
-    // 🔒 SECURITY: Check if registration is enabled
-    const ALLOW_ADMIN_REGISTRATION = process.env.ALLOW_ADMIN_REGISTRATION === 'true';
-    
-    if (!ALLOW_ADMIN_REGISTRATION) {
+    // Only allow in development
+    if (process.env.NODE_ENV === 'production') {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Admin registration is disabled for security reasons' 
-        },
+        { success: false, error: 'Registration disabled in production' },
         { status: 403 }
       );
     }
@@ -95,3 +111,4 @@ export async function POST(request) {
     );
   }
 }
+*/
