@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminThemeProvider, useAdminTheme } from '../AdminThemeProvider';
 import AdminHeader from '@/components/admin/AdminHeader';
-import AdminStatsCards from '@/components/admin/AdminStatsCards';
 import AdminDashboardContent from '@/components/admin/AdminDashboardContent';
 
 function AdminDashboardPage() {
@@ -164,14 +163,6 @@ function AdminDashboardPage() {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <AdminStatsCards 
-          stats={{
-            totalTiers: pricingTiers.length,
-            activeCourses: 12,
-            growthRate: '+15%'
-          }}
-        />
-
         <AdminDashboardContent
           tiers={pricingTiers}
           onAddTier={handleAddTier}
