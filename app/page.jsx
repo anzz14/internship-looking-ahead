@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './globals.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useIsClient } from '@/lib/useIsClient';
 
 // Import components
 import HomeHero from '@/components/home/HomeHero';
@@ -16,20 +17,21 @@ import HomeCTA from '@/components/home/HomeCTA';
 import HomeFooter from '@/components/home/HomeFooter';
 
 export default function HomePage() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const isClient = useIsClient();
   
   useEffect(() => {
-    AOS.init({ 
-      duration: 800, 
-      once: true, 
-      easing: 'ease-out-cubic',
-      offset: 50
-    });
-    setIsLoaded(true);
-  }, []);
+    if (isClient) {
+      AOS.init({ 
+        duration: 800, 
+        once: true, 
+        easing: 'ease-out-cubic',
+        offset: 50
+      });
+    }
+  }, [isClient]);
 
   return (
-    <div className={`min-h-screen bg-white dark:bg-gray-900 overflow-hidden transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+    <div className="min-h-screen bg-white dark:bg-gray-900 overflow-hidden" suppressHydrationWarning>
       {/* Floating Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 bg-blue-200/20 dark:bg-blue-800/10 rounded-full blur-3xl animate-pulse"></div>
@@ -39,7 +41,7 @@ export default function HomePage() {
       </div>
 
       <main className="relative z-10">
-        <HomeHero isLoaded={isLoaded} />
+        <HomeHero />
         <HomeStats />
         <FeaturesSection />
         <WorkshopPreview />
