@@ -1,11 +1,18 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, PoundSterling } from 'lucide-react';
+import { CheckCircle, PoundSterling, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const PricingSection = () => {
-  const pricingTiers = [
+  const [pricingTiers, setPricingTiers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fallback static data in case API fails
+  const fallbackTiers = [
     {
       name: "Quick Start",
       price: "£350",
@@ -41,6 +48,31 @@ const PricingSection = () => {
     }
   ];
 
+  useEffect(() => {
+    fetchPricingTiers();
+  }, []);
+
+  const fetchPricingTiers = async () => {
+    try {
+      const response = await fetch('/api/admin/pricing');
+      const data = await response.json();
+      
+      if (data.success && data.data.length > 0) {
+        setPricingTiers(data.data);
+      } else {
+        // Use fallback data if no tiers in database
+        setPricingTiers(fallbackTiers);
+      }
+    } catch (error) {
+      console.error('Error fetching pricing tiers:', error);
+      setError('Failed to load pricing');
+      // Use fallback data on error
+      setPricingTiers(fallbackTiers);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
       <div className="max-w-6xl mx-auto">
@@ -57,10 +89,22 @@ const PricingSection = () => {
           </p>
         </div>
 
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+            <span className="ml-2 text-gray-600 dark:text-gray-300">Loading pricing options...</span>
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <p className="text-red-500 mb-4">{error}</p>
+            <p className="text-gray-600 dark:text-gray-300">Showing default pricing options</p>
+          </div>
+        ) : null}
+
         <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {pricingTiers.map((tier, index) => (
             <Card 
-              key={index} 
+              key={tier._id || index} 
               className={`relative overflow-hidden border-0 shadow-xl ${tier.popular ? 'ring-2 ring-purple-500 dark:ring-purple-400' : ''}`}
               data-aos="fade-up"
               data-aos-delay={index * 150}
@@ -80,7 +124,10 @@ const PricingSection = () => {
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{tier.name}</h3>
                   <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">{tier.price}</div>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">{tier.duration}</p>
+                  {tier.priceRange && (
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">{tier.priceRange}</p>
+                  )}
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{tier.duration}</p>
                   <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">{tier.description}</p>
                 </div>
 
